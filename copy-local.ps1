@@ -1,0 +1,1 @@
+Copy-Item -Path ./.powershell_ -Destination $env:USERPROFILE -Force -Recurse

@@ -1,0 +1,97 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "Output": "",
+  "blocks": [
+    {
+      "alignment": "left",
+      "segments": [
+        {
+          "background": "#282a36",
+          "foreground": "#8be9fd",
+          "powerline_symbol": "\ue0c4",
+          "properties": {
+            "template": "{{ .CurrentDate | date .Format }} ",
+            "time_format": "15:04:05"
+          },
+          "style": "powerline",
+          "type": "time"
+        },
+        {
+          "background": "#282a36",
+          "foreground": "#50fa7b",
+          "powerline_symbol": "\ue0b0",
+          "properties": {
+            "folder_separator_icon": "/",
+            "style": "agnoster_short",
+            "template": "\ue5ff {{ .Path }} ",
+            "max_depth": 2
+          },
+          "style": "powerline",
+          "type": "path"
+        },
+        {
+          "type": "poshgit",
+          "style": "powerline",
+          "powerline_symbol": "\uE0B0",
+          "foreground": "#f1fa8c",
+          "background": "#282a36"
+        },
+        {
+          "type": "node",
+          "style": "powerline",
+          "powerline_symbol": "\uE0B0",
+          "foreground": "#bd93f9",
+          "background": "#282a36",
+          "properties": {
+            "template": " \uF898 {{ .Full }} "
+          }
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "right",
+      "type": "prompt",
+      "segments": [
+        {
+          "type": "ipify",
+          "style": "powerline",
+          "foreground": "#8be9fd",
+          "background": "#282a36",
+          "properties": {
+            "template": "{{ .IP }}",
+            "cache_timeout": 5,
+            "http_timeout": 1000
+          }
+        }
+      ]
+    },
+    {
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "type": "root",
+          "style": "powerline",
+          "powerline_symbol": "\uE0B0",
+          "foreground": "#f1fa8c",
+          "background": "#282a36",
+          "properties": {
+            "template": "\uF0E7"
+          }
+        },
+        {
+          "foreground": "#bd93f9",
+          "properties": {
+            "template": "\u279c "
+          },
+          "style": "plain",
+          "type": "text"
+        }
+      ],
+      "type": "prompt"
+    }
+  ],
+  "console_title_template": "{{if .Root}}(Admin) {{end}}{{.Folder}}",
+  "version": 1
+}
