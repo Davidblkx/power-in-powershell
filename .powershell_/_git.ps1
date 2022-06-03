@@ -87,3 +87,10 @@ function Set-GitPush ([switch]$F) {
     }
 }
 Set-Alias -Name gpush -Value Set-GitPush
+
+function Set-GitAmend() {
+    git add -A
+    git commit --amend --no-edit
+    git push --force
+}
+Set-Alias -Name gamend -Value Set-GitAmend

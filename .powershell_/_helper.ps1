@@ -37,5 +37,6 @@ function Show-PIPHelper {
     Write-Color -Text "  gstatus:"," current git status" -Color green,white
     Write-Color -Text "  grebase:"," rebase with master" -Color green,white
     Write-Color -Text "  gpush:"," push to remote, -F to force" -Color green,white
+    Write-Color -Text "  gamend:"," amend and push to remote" -Color green,white
 }
 Set-Alias -Name helpme -Value Show-PIPHelper
