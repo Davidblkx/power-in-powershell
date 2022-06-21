@@ -50,23 +50,6 @@
       "type": "prompt"
     },
     {
-      "alignment": "right",
-      "type": "prompt",
-      "segments": [
-        {
-          "type": "ipify",
-          "style": "powerline",
-          "foreground": "#8be9fd",
-          "background": "#282a36",
-          "properties": {
-            "template": "{{ .IP }}",
-            "cache_timeout": 5,
-            "http_timeout": 1000
-          }
-        }
-      ]
-    },
-    {
       "alignment": "left",
       "newline": true,
       "segments": [
