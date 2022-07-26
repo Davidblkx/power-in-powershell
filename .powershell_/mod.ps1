@@ -4,7 +4,6 @@
 . ~/.powershell_/_git.ps1
 . ~/.powershell_/_sln.ps1
 
-Import-Module oh-my-posh
 Import-Module npm-completion
 Import-Module posh-git
 

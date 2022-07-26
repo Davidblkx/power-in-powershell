@@ -28,32 +28,56 @@ function Set-GitCommitAll ($message) {
 }
 Set-Alias -Name commit-all -Value Set-GitCommitAll
 
+function Get-GitLogObj($lines = 10) {
+    $i = -1
+    (git log --pretty=%h_1_%s_1_%aN_1_%aE_1_%aD -n $lines) |
+    ForEach-Object { $d = ($_ -split "_1_"); [PSCustomObject]@{ index = $i += 1; hash = $d[0]; message = $d[1]; name = $d[2]; email = $d[3] } }
+}
+
 function Get-GitLog ($lines = 10) {
-    nu -c "git log --pretty=%h»¦«%s»¦«%aN»¦«%aE»¦«%aD -n $lines | lines | split column `"»¦«`" commit subject name email date | select commit subject"
+    Get-GitLogObj($lines) | ForEach-Object { "$($_.index): $($_.hash) | $($_.message)" }
 }
 Set-Alias -Name log -Value Get-GitLog
 
 function Get-GitLogLong ($lines = 10) {
-    nu -c "git log --pretty=%h»¦«%s»¦«%aN»¦«%aE»¦«%aD -n $lines | lines | split column `"»¦«`" commit subject name email date"
+    Get-GitLogObj($lines) | ForEach-Object { "$($_.index): $($_.hash) | $($_.message) --- <$($_.name)($($_.email))>" }
 }
 Set-Alias -Name loog -Value Get-GitLogLong
 
-function Get-GitBranches {
-    nu -c "git branch | lines"
+function Search-GitLog {
+    Get-GitLogLong(5000) | peco | ForEach-Object { $data = ($_ -Split " "); $data[1] } | Set-Clipboard
+}
+Set-Alias -Name gfind -Value Search-GitLog
+
+function Get-GitBranchObj($remote = $False) {
+    $i = -1
+    $a = If ($remote) { "-a" } Else { "" }
+    git branch $a |
+    ForEach-Object {
+        $v = ($_.trim() -Split "\* ");
+        $c = ($v[0].Length -eq 0);
+        $n = ($v[0].Length -eq 0) ? $v[1] : $v[0];
+        [PSCustomObject]@{ index = $i += 1; current = $c; name = $n }
+    }
+}
+
+function Get-GitBranches([switch]$r) {
+    Get-GitBranchObj($r) | ForEach-Object {
+        $value = "$($_.index): $($_.name)"
+        if ($_.current) { Write-Host -ForegroundColor Green $value }
+        else { Write-Host $value }
+    }
 }
 Set-Alias -Name gls -Value Get-GitBranches
 
-function Set-GitBranch ($index = 0) {
-    nu -c "git checkout (git ls | lines | skip $index | first | str trim | str find-replace '\* ' '')"
+function Set-GitBranch ($index = 0, [switch]$r) {
+    git checkout $(Get-GitBranchObj($r))[$index].name
 }
 Set-Alias -Name gitc -Value Set-GitBranch
 
-function Remove-GitBranch ($index, [switch]$F) {
-    if ($F) {
-        nu -c "git branch --delete (git ls | lines | skip $index | first | str trim | str find-replace '\* ' '') --force"
-    } else {
-        nu -c "git branch --delete (git ls | lines | skip $index | first | str trim | str find-replace '\* ' '')"
-    }
+function Remove-GitBranch ($index, [switch]$F, [switch]$r) {
+    $force = $F ? "-D" : ""
+    git branch --delete $(Get-GitBranchObj($r))[$index].name $force
 }
 Set-Alias -Name gbd -Value Remove-GitBranch
 
